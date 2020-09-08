@@ -2,27 +2,143 @@
 {% load static %}
 
 {% block content %}
-   
-<div class="row">
+<link rel="stylesheet" href="{% static 'css/shop.css' %}"/>
+<script src="{% static 'noUiSlider/nouislider.js' %}"></script>
+<div class="shop-title"> {{gender}} </div>
 
-{% for product in productos %}
-	<div class="col-lg-4">
-     <img class="thumbnail" src="{{product.imageURL}}">
-		<div class="box-element product">
+<div class="shop-content">
+     <div class="section-filters">
+          <div class="opts-box">
+               <div class="filter-title">Price Q.</div>
+               <div class="opts">
                
-               <div class="box-element product">
-                    <h6><strong> {{product.name}} </strong></h6>
-                    <hr>
+                    <div id="slider" class="slider">
+                    </div>
 
-                    <button data-product={{product.id}} data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button>
-                    <a class="btn btn-outline-success" href="#">View</a>
-                    <h4 style="display: inline-block; float: right; font-size:1.5vw"><strong>Q {{product.price|floatformat:2}}</strong></h4>
                </div>
-		</div>
-	</div>
-{% endfor %}
+
+               <div class="filter-title">Size</div>
+               <div class="opts">
+                    {% for size in sizes %}
+                         <div class="checkbox">
+                         <input id={{size.size}} name={{size.size}} type="checkbox" {% if size.checked %} checked {% endif %} onchange="CheckBox(this,'size')" />
+                              <label for={{size.size}} style="--col: ForestGreen;"></label>
+                              <div class="t-checkbox">{{size.size}}</div>
+                         </div>
+                    {% endfor %}
+               </div>
+
+               <div class="filter-title">Color</div>
+               <div class="opts">
+
+                    {% for color in colors %}
+                         <div class="checkbox">
+                              <input id={{color.color}} name={{color.color}} type="checkbox" {% if color.checked %} checked {% endif %} onchange="CheckBox(this,'color')"/>
+            
+                              <label for={{color.color}} style="--col: {{color.color}};"></label>
+
+                              <div class="t-checkbox">{{color.color}}</div>
+                         </div>
+                    {% endfor %}
+               
+               </div>
+          </div>
+
+     </div>
+
+     <div class="section-items">
+     {% for product in productos %}
+          <div class="col-lg-3 item-product">
+
+               <div data-product={{product.id}} data-action="see" class="item-img update-cart">
+                    <img class="thumbnail" src="{{product.image_url}}">
+               </div>
+          
+               <div class="box-element product">
+                    <div class="box-element product">
+
+                         <div class="title-product">{{product.name}} <div>{{product.get_size}}</div> </div>
+
+                         <hr class="divider">
+
+                         <div class="box-bottom-i">
+                              <div>
+                                   <button data-product={{product.id}} data-action="add" class="btn btn-opt btn-success btn-sm add-btn update-cart">Add to Cart <i class="fas fa-shopping-cart"></i> </button>
+                                   <button data-product={{product.id}} data-action="see" class="btn btn-opt btn-secondary btn-sm update-cart"> <i class="fas fa-eye"></i> </button>
+                              </div>
+
+                              <div class="price-product">Q {{product.price|floatformat:2}}</div>
+                         </div>
+
+                    </div>
+               </div>
+          </div>
+     {% endfor %}
+     {% for i in ghosts %}
+          <div class="col-lg-3 item-product product-not">
+
+               <div class="item-img">
+                    <img class="thumbnail" src="">
+               </div>
+          
+               <div class="box-element product">
+                    <div class="box-element product">
+
+                         <div class="title-product"> - <div> </div> </div>
+
+                         <hr class="divider">
+
+                         <div class="box-bottom-i">
+                              <div>
+                                   <button class="btn btn-opt btn-success btn-sm add-btn"> <i class="fas fa-shopping-cart"></i> </button>
+                                   <button class="btn btn-opt btn-secondary btn-sm"> <i class="fas fa-eye"></i> </button>
+                              </div>
+
+                              <div class="price-product"> </div>
+                         </div>
+
+                    </div>
+               </div>
+          </div>
+     {% endfor %}
+     </div>
+
+     <div class="pagination">
+          {% include "tienda/pagination.html" %}
+     </div>
+
+   <!-- Modal -->
+   <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+     <div class="modal-dialog modal-dialog-centered" role="document">
+       <div class="modal-content" data-dismiss="modal">
+         <div class="modal-header">
+           <h5 class="modal-title modal-bold-opt" id="exampleModalCenterTitle">  </h5>
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+             <span aria-hidden="true">&times;</span>
+           </button>
+         </div>
+         <div class="modal-body">
+           <div class="modal-img">
+                <img id='id-img-modal' class="img-item-modal" src="#">
+          </div>
+         </div>
+
+         <div class="modal-footer">
+          <h5 class="modal-title modal-bold-opt" id="exampleModalPrice">  </h5>
+         </div>
+
+       </div>
+     </div>
+   </div>
 
 </div>
+
+<!--OPTIONS-->
+
+<input type="number" id="min_price" class="hidden" value={{min_price}}>
+<input type="number" id="max_price" class="hidden" value={{max_price}}>
+
+<script src="{% static 'js/shop.js' %}"/></script>
 
 {% endblock content %}
 

@@ -1,5 +1,8 @@
+"""
+MODELOS
+"""
 from django.db import models
-from django.contrib.auth.models import  User
+from django.contrib.auth.models import User
 # Create your models here.
 
 class Customer(models.Model):
@@ -10,17 +13,40 @@ class Customer(models.Model):
     def __str__(self):
         return self.name
 
+class SizesGeneral(models.Model):
+    size = models.CharField(max_length=200, null=True)
+
+    def __str__(self):
+        return self.size
+
+class Color(models.Model):
+    color = models.CharField(max_length=200, null=True)
+
+    def __str__(self):
+        return self.color
+
 class Product(models.Model):
     name = models.CharField(max_length=200, null=True)
-    price = models.FloatField()
+    price = models.DecimalField(max_digits=7, decimal_places=2)
     digital = models.BooleanField(default=False, null=True, blank=True)
     image = models.ImageField(null=True, blank=True)
+
+    OPT_CHOICES = (
+        ('m', 'HOMBRE'),
+        ('f', 'MUJER')
+    )
+    gender = models.CharField(max_length=200, choices=OPT_CHOICES, null=True)
+    size = models.ManyToManyField(SizesGeneral, blank=True)
+    color = models.CharField(max_length=200, choices=Color.objects.values_list('color', 'color'), null=True)
+
+    def get_size(self):
+        return ", ".join([str(p) for p in self.size.all()])
 
     def __str__(self):
         return self.name
 
     @property
-    def imageURL(self):
+    def image_url(self):
         try:
             url = self.image.url
         except:
@@ -41,22 +67,20 @@ class Order(models.Model):
         shipping = False
         orderitems = self.orderitem_set.all()
         for i in orderitems:
-            if i.product.digital == False:
+            if not i.product.digital:
                 shipping = True
         return shipping
 
     @property
     def get_cart_total(self):
-        orderitems = self.orderitem_set.all();
+        orderitems = self.orderitem_set.all()
         total = sum([item.get_total for item in orderitems])
         return total
-    
     @property
     def get_cart_items(self):
         orderitems = self.orderitem_set.all()
         total = sum([item.quantity for item in orderitems])
         return total
-    
 
 class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, blank=True, null=True)
@@ -79,5 +103,3 @@ class ShippingAddress(models.Model):
 
     def __str__(self):
         return str(self.address)
-
-

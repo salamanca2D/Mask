@@ -1,0 +1,13 @@
+.cart-content{
+    width:60%;
+    display: flex;
+    flex-wrap: wrap;
+    margin: auto;
+    height: 100%;
+    position: relative;
+}
+
+.row-cart{
+    width: 100%;
+    padding-top: 50px;
+}

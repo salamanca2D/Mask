@@ -1,8 +1,12 @@
 {% extends 'tienda/main.html' %}
 {% load static %}
 {% block content %}
-     <div class="row">
-		<div class="col-lg-6">
+<link rel="stylesheet" href="{% static 'css/checkout.css' %}"/>
+
+<div class="chekout-content">
+     <div class="row row-checkout">
+
+		<div class="col-lg-5 ch-a">
 			<div class="box-element" id="form-wrapper">
 				<form id="form">
 					{% csrf_token %}
@@ -31,9 +35,9 @@
 						<div class="form-field">
 							<input class="form-control" type="text" name="zipcode" placeholder="Zip code..">
 						</div>
-						<div class="form-field">
-							<input class="form-control" type="text" name="country" placeholder="Zip code..">
-						</div>
+						<!--<div class="form-field">
+							<input class="form-control" type="text" name="country" placeholder="Country.">
+						</div>-->
 					</div>
 
 					<hr>
@@ -43,13 +47,12 @@
 
 			<br>
 			<div class="box-element hidden" id="payment-info">
-				<small>Paypal Options</small>
-				<button id='make-payment'>Realizar Pago</button>
+				<input id="make-payment" class="btn btn-primary btn-block" type="submit" value="Realizar Pago">
 			</div>
 			
 		</div>
 
-		<div class="col-lg-6">
+		<div class="col-lg-7 ch-b">
 			<div class="box-element">
 				<a  class="btn btn-outline-dark" href="{% url 'cart' %}">&#x2190; Back to Cart</a>
 				<hr>
@@ -57,7 +60,7 @@
 				<hr>
 				{% for item in items %}
 				<div class="cart-row">
-					<div style="flex:2"><img class="row-image" src="{{item.product.imageURL}}"></div>
+					<div style="flex:2"><img class="row-image" src="{{item.product.image_url}}"></div>
 					<div style="flex:2"><p>{{item.product.name}}</p></div>
 					<div style="flex:1"><p>{{item.product.price|floatformat:2}}</p></div>
 					<div style="flex:1"><p>x{{item.quantity}}</p></div>
@@ -68,6 +71,31 @@
 			</div>
 		</div>
 	</div>
+</div>
+
+ <!-- Modal -->
+   <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+     <div class="modal-dialog modal-dialog-centered" role="document">
+       <div class="modal-content">
+         <div class="modal-header">
+           <h5 class="modal-title modal-bold-opt" id="exampleModalCenterTitle"> COMPRA REALIZADA </h5>
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+             <span aria-hidden="true">&times;</span>
+           </button>
+         </div>
+         <div class="modal-body modal-body-check">
+                <i class="fas fa-check-circle"></i>
+         </div>
+         <div class="modal-footer">
+        	<button type="button" class="btn btn-success" data-dismiss="modal" >Accept</button>
+         </div>
+
+       </div>
+     </div>
+   </div>
+
+</div>
+
 <script type="text/javascript">
 	var shipping = '{{order.shipping}}'
 	var total = '{{order.get_cart_total|floatformat:2}}'
@@ -86,11 +114,11 @@
 	}
 
 	var form = document.getElementById('form')
-	csrftoken = form.getElementByTagName('input')[0].value
+	csrftoken = form.getElementsByTagName('input')[0].value;
 
 	form.addEventListener('submit', function(e){
 		e.preventDefault()
-		console.log('form Submmites...');
+
 		document.getElementById('form-button').classList.add('hidden')
 		document.getElementById('payment-info').classList.remove('hidden')
 	})
@@ -101,7 +129,6 @@
 	
 
 	function submitFormData(){
-		console.log('payment clicked')
 
 		var userFormData = {
 			'name': null, 
@@ -140,10 +167,19 @@
 		.then((response) => response.json())
 		.then((data) => {
 			console.log('Success', data)
-			alert('transaccion completa');
-			window.location.href = "{% url 'tienda' %}"
+
+			cart = {}
+			document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/;SameSite=Strict; Secure"
+			
+			$('#exampleModalCenter').modal('show');
+
 		})
 		
 	}
+
+	$('#exampleModalCenter').on('hidden.bs.modal', function (e) {
+  		window.location.href = "{% url 'shop' gender=gender %}"
+	})
+		
 </script>
 {% endblock content %}

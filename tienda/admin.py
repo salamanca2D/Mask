@@ -1,3 +1,6 @@
+"""
+ADMIN
+"""
 from django.contrib import admin
 
 # Register your models here.
@@ -5,7 +8,14 @@ from django.contrib import admin
 from .models import *
 
 admin.site.register(Customer)
-admin.site.register(Product)
+#admin.site.register(Product)
 admin.site.register(Order)
 admin.site.register(OrderItem)
 admin.site.register(ShippingAddress)
+admin.site.register(SizesGeneral)
+admin.site.register(Color)
+
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ('name', 'price', 'gender', 'get_size', 'color')
+    

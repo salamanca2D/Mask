@@ -1,0 +1,33 @@
+.chekout-content{
+    width:80%;
+    display: flex;
+    flex-wrap: wrap;
+    margin: auto;
+    height: 100%;
+    position: relative;
+}
+
+.row-checkout{
+    width: 100%;
+    padding-top: 50px;
+    flex-direction: row;
+}
+
+.row-checkout * {
+    box-sizing: border-box !important;
+}
+
+.modal-bold-opt{
+    font-weight: bold;
+}
+
+.modal-body-check{
+    display: flex;
+    height: 250px;
+    font-size: 100px;
+    color: green;
+}
+
+.modal-body-check i {
+    margin:auto
+}

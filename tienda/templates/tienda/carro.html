@@ -1,10 +1,17 @@
 {% extends 'tienda/main.html' %}
 {% load static %}
 {% block content %}
-<div class="row">
+<link rel="stylesheet" href="{% static 'css/cart.css' %}"/>
+
+<div class="cart-content">
+<div class="row row-cart">
 	<div class="col-lg-12">
 		<div class="box-element">
-          <a  class="btn btn-outline-dark" href="{% url 'tienda' %}">&#x2190; Continue Shopping</a>
+               {% if not ctr %}
+          <a  class="btn btn-outline-dark" href="{% url 'shop' gender=gender %}">&#x2190; Continue Shopping</a>
+               {% else %}     
+          <a  class="btn btn-outline-dark" href="{% url 'inicio' %}">&#x2190; Continue Shopping</a>
+               {% endif %}
           <br>
           <br>
           <table class="table">
@@ -14,7 +21,7 @@
                     <th>
                          <a  style="float:right; margin:5px;" class="btn btn-success" href="{% url 'checkout' %}">Checkout</a>
                     </th>
-               </tr>
+               </tr> 
           </table>
 		</div>
 
@@ -30,13 +37,13 @@
           
           {% for item in items %}
           <div class="cart-row">
-               <div style="flex:2"><img class="row-image" src="{{item.product.imageURL}}"></div>
+               <div style="flex:2"><img class="row-image" src="{{item.product.image_url}}"></div>
                <div style="flex:2"><p>{{item.product.name}}</p></div>
                <div style="flex:1"><p>Q {{item.product.price|floatformat:2}}</p></div>
                <div style="flex:1">
                     <p class="quantity">x{{item.quantity}}</p>
                     <div class="quantity">
-                         <img data-product="{{item.product.id}}" data-action="add" class="chg-quantity update-cart" src="{% static  'images/arrow-up.png' %}">
+                         <img data-product="{{item.product.id}}" data-action="add_alt" class="chg-quantity update-cart" src="{% static  'images/arrow-up.png' %}">
                
                          <img data-product="{{item.product.id}}" data-action="remove" class="chg-quantity update-cart" src="{% static  'images/arrow-down.png' %}">
                     </div>
@@ -45,5 +52,6 @@
           </div>
           {% endfor %}
 	</div>
+</div>
 </div>
 {% endblock content %}

@@ -7,11 +7,14 @@ for (i = 0; i < updateBtns.length; i++) {
         var productId = this.dataset.product
         var action = this.dataset.action
 
-        console.log('productId',productId,'action',action)
 
-        console.log('USER', user)
+        if (action == 'see'){
+            seeItem(productId);
+            return true;
+        }
+
         if (user == "AnonymousUser"){
-            console.log('Usuario no autenticado')
+            addCookieItem(productId, action)
         }else{
             updateUserOrder(productId, action)
         }
@@ -19,8 +22,44 @@ for (i = 0; i < updateBtns.length; i++) {
     })
 }
 
+function addCookieItem(productId, action){
+
+    if ((action == 'add') || (action == 'add_alt')){
+        if (cart[productId] == undefined){
+            cart[productId] = {'quantity':1}
+        }
+        else
+        {
+            cart[productId]['quantity'] += 1
+        }
+    }
+
+    if (action == 'remove'){
+        cart[productId]['quantity'] -= 1
+
+        if (cart[productId]['quantity'] <= 0){
+            delete cart[productId]
+        }
+    }
+
+    quantity = 0;
+    for (var [key, child] of Object.entries(cart)) {
+        quantity += child.quantity; 
+    }
+    
+    document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/;SameSite=Strict; Secure";
+    document.getElementById('cart-total').innerText = '('+quantity+')';
+
+    if ((action == 'remove') || (action == 'add_alt')){
+        location.reload();
+    }
+    else
+    {
+        showSnackbar(action);
+    }
+}
+
 function updateUserOrder(productId, action){
-    console.log('User is logieadi, enviado data...')
 
     var url = '/update_item/'
 
@@ -38,7 +77,68 @@ function updateUserOrder(productId, action){
     })
 
     .then((data) => {
-        console.log('datos', data)
-        location.reload()
+
+        document.getElementById('cart-total').innerText = '('+data.quantity+')';
+        showSnackbar(action);
     })
 }
+
+function seeItem(productId){
+
+    var url = '/get_item/'
+
+    fetch(url, {
+        method:'POST',
+        headers:{
+            'Content-Type':'application/json',
+            'X-CSRFToken': '',
+        },
+        body: JSON.stringify({'productId':productId})
+    })
+
+    .then((response) => {
+        return response.json()
+    })
+
+    .then((data) => {
+
+        $('#exampleModalCenter').modal('show');
+
+        document.getElementById('exampleModalCenterTitle').innerText = data.name;
+        document.getElementById('exampleModalPrice').innerText = 'Q '+data.price;
+        document.getElementById('id-img-modal').src = data.url;
+
+    })
+}
+
+
+function showSnackbar(action) {
+    // Get the snackbar DIV
+    var parent = document.getElementById("snackbars");
+    var x = document.createElement("div");
+  
+    // Add the "show" class to DIV
+    x.className = "snackbar show";
+
+    text_act = '';
+    if (action == 'add'){
+        x.style.backgroundColor = 'ForestGreen';
+        text_act = 'item added <i class="fas fa-cart-plus"></i>';
+    }
+    else
+    {
+        x.style.backgroundColor = 'orange';
+        text_act = 'item removed -';
+    }
+  
+    x.innerHTML = text_act;
+
+    // After 2 seconds, remove the show class from DIV
+    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 2000);
+    parent.appendChild(x);
+  } 
+
+
+
+////
+window.ondragstart = function() { return false; } 

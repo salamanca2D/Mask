@@ -1,0 +1,27 @@
+{% extends 'tienda/main.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}"/>
+<div class="c_home">
+
+    
+    <a href="{% url 'shop' gender='man' %}">
+    <div class="CARD">
+        <div class="CARD_LABEL">MAN <div>SHOP NOW</div> </div>
+        <img class="IMG_PF" src="{% static 'images/home/PortraitDecorator.jpg' %}">
+        <img class="IMG_P" src="{% static 'images/home/MenPortrait.jpg' %}">
+    </div>
+    </a>
+
+    <a href="{% url 'shop' gender='woman' %}">
+    <div class="CARD">
+        <div class="CARD_LABEL">WOMAN <div>SHOP NOW</div></div>
+        <img class="IMG_PF" src="{% static 'images/home/PortraitDecorator.jpg' %}">
+        <img class="IMG_P" src="{% static 'images/home/WomanPortrait.jpg' %}">
+    </div>
+    </a>
+
+</div>
+
+{% endblock content %}

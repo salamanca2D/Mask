@@ -5,13 +5,24 @@
 <title>MASK</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
 
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Sedgwick+Ave+Display&display=swap" rel="stylesheet">
+
+    <link href="{% static 'noUiSlider/nouislider.css' %}" rel="stylesheet">
+
+
+    <link href="{% static 'fontawesome/css/all.css' %}" rel="stylesheet">
 
     <link rel="icon" href="{% static 'favicon.ico' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}" >
 
   <script type="text/javascript">
-    var user = '{{request.user}}'
+    var user = '{{request.user}}' 
 
     function getToken(name) {
     let cookieValue = null;
@@ -28,42 +39,72 @@
     }
     return cookieValue;
 }
-const csrftoken = getToken('csrftoken');
+let csrftoken = getToken('csrftoken');
+
+
+function getCookie(name){
+  var cookieArr = document.cookie.split(';');
+
+  for(var i = 0; i < cookieArr.length; i++)
+  {
+    var cookiePair = cookieArr[i].split("=");
+
+    if (name == cookiePair[0].trim()) {
+      return decodeURIComponent(cookiePair[1]);
+    }
+  }
+  //retornar nullo si no se encuentra
+  return null;
+}
+var cart = JSON.parse(getCookie('cart'))
+
+if (cart == undefined)
+{
+  cart = {}
+  document.cookie = 'cart=' + JSON.stringify(cart) + ";Max-Age=;domain=;path=/;SameSite=Strict; Secure";
+}
+
   </script>
 
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="{% url 'tienda' %}">MASK</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+<div class="root">
+  <nav class="navbarTop">
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="{% url 'tienda' %}"> Tienda <span class="sr-only">(current)</span></a>
-      </li>
- 
-    </ul>
-    <div class="form-inline my-2 my-lg-0">
-     	<a href="#"class="btn btn-warning">Login</a>
-     	
-     	<a href="{% url 'cart' %}">
-    		<img  id="cart-icon" src="{% static 'images/cart.png' %}">
-    	</a>
-    	<p id="cart-total"> {{cartItems}} </p>
+    <a class="brand" href="{% url 'inicio' %}">MASK</a>
 
-    </div>
+    <a class="icoCart" href="{% url 'cart' %}">
+        <i class="fas fa-shopping-cart"></i> CART <span id="cart-total"> ({{cartItems}}) </span>
+    </a>
+
+  </nav>
+  
+  <div class="body_content">
+      {% block content %}
+
+      {% endblock content %}
   </div>
-</nav>
 
-    <div class="container">
-    <br>
-    {% block content %}
+  <!-- The actual snackbar -->
+  <div id="snackbars"> </div>
+  
+  <footer>
 
-    {% endblock content %}
+    <div class="contact opt_hov">
+      <i class="fas fa-envelope-square"></i>
+      <span>sales@mask.com</span>
+    </div>
+
+    ©  <script>document.write(new Date().getFullYear())</script> MASK
+
+    <div class="social">
+      <i class="fab fa-facebook-square opt_hov"></i>
+      <i class="fab fa-instagram-square opt_hov"></i>
+      <i class="fab fa-twitter-square opt_hov"></i>
+    </div>
+
+  </footer>
 </div>
 
 <script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
