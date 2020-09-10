@@ -1,2 +1,2 @@
 # Mask
-basic shop with python
+basic shop with python and django
