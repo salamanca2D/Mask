@@ -58,7 +58,7 @@ function getCookie(name){
 }
 var cart = JSON.parse(getCookie('cart'))
 
-if (cart == undefined)
+if ( (cart == undefined) || (cart == null) )
 {
   cart = {}
   document.cookie = 'cart=' + JSON.stringify(cart) + ";Max-Age=;domain=;path=/;SameSite=Strict; Secure";
@@ -89,7 +89,7 @@ if (cart == undefined)
   <!-- The actual snackbar -->
   <div id="snackbars"> </div>
   
-  <footer>
+  <footer class='footer-desktop'>
 
     <div class="contact opt_hov">
       <i class="fas fa-envelope-square"></i>
@@ -99,6 +99,19 @@ if (cart == undefined)
     ©  <script>document.write(new Date().getFullYear())</script> MASK
 
     <div class="social">
+      <i class="fab fa-facebook-square opt_hov"></i>
+      <i class="fab fa-instagram-square opt_hov"></i>
+      <i class="fab fa-twitter-square opt_hov"></i>
+    </div>
+
+  </footer>
+
+  <footer class='footer-mobil'>
+
+    <div class='foo-txt'>©  <script>document.write(new Date().getFullYear())</script> MASK</div>
+
+    <div class="social">
+      <i class="fas fa-envelope-square"></i>
       <i class="fab fa-facebook-square opt_hov"></i>
       <i class="fab fa-instagram-square opt_hov"></i>
       <i class="fab fa-twitter-square opt_hov"></i>

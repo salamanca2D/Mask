@@ -28,7 +28,7 @@ SECRET_KEY = 'm&cc3^5m66gyx_(4lpq#!-fqub9e31%(d32-&gdiu2eotwh@-s'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
 
     'tienda.apps.TiendaConfig'
 ]

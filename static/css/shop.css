@@ -108,7 +108,7 @@ hr.divider{
 
 .modal-img {
     display: flex;
-    justify-content: center;
+    justify-content: center; 
 }
 
 .img-item-modal{
@@ -254,3 +254,44 @@ input[type="checkbox"] {
       visibility: hidden;
       pointer-events: none;
   }
+
+  
+@media screen and (max-width: 995px)
+{
+    .section-filters{
+        width: 40%;
+    }
+    
+    .section-items{
+        width: 60%;
+    }
+
+    .opts {
+        height: 0%;
+    }
+}
+
+@media screen and (max-width: 640px)
+{
+    .product-not{
+        display: none;
+    }
+
+    .notShow{
+        display: none;
+    }
+
+    .section-items{
+        width: 100%;
+    }
+
+    .item-product{
+        padding: 0px;
+        margin: 1%;
+        width: 48%;
+    }
+
+    .box-element{
+        box-shadow: hsl(0, 0%, 80%) 0 0 2px;
+    }
+}

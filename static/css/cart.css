@@ -11,3 +11,36 @@
     width: 100%;
     padding-top: 50px;
 }
+
+@media screen and (max-width: 1024px)
+{
+    .cart-content{
+        width: 90%;
+    }
+    .row-cart{
+        margin: 0px;
+    }
+}
+
+@media screen and (max-width: 640px)
+{
+    .cart-content{
+        width: 100%;
+    }
+
+    .cart-content strong{
+        font-size: 12px;
+    }
+
+    .row-cart{
+        margin: 0px;
+    }
+
+    .row-cart p{
+        font-size: 12px;
+    }
+
+    h5{
+        font-size: 15px;
+    }
+}

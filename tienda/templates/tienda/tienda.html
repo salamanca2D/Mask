@@ -7,7 +7,7 @@
 <div class="shop-title"> {{gender}} </div>
 
 <div class="shop-content">
-     <div class="section-filters">
+     <div class="section-filters notShow">
           <div class="opts-box">
                <div class="filter-title">Price Q.</div>
                <div class="opts">
@@ -64,7 +64,7 @@
                          <div class="box-bottom-i">
                               <div>
                                    <button data-product={{product.id}} data-action="add" class="btn btn-opt btn-success btn-sm add-btn update-cart">Add to Cart <i class="fas fa-shopping-cart"></i> </button>
-                                   <button data-product={{product.id}} data-action="see" class="btn btn-opt btn-secondary btn-sm update-cart"> <i class="fas fa-eye"></i> </button>
+                                   <button data-product={{product.id}} data-action="see" class="btn btn-opt btn-secondary btn-sm update-cart notShow"> <i class="fas fa-eye"></i> </button>
                               </div>
 
                               <div class="price-product">Q {{product.price|floatformat:2}}</div>
@@ -121,7 +121,7 @@
            <div class="modal-img">
                 <img id='id-img-modal' class="img-item-modal" src="#">
           </div>
-         </div>
+         </div> 
 
          <div class="modal-footer">
           <h5 class="modal-title modal-bold-opt" id="exampleModalPrice">  </h5>
